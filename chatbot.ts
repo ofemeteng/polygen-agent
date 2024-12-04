@@ -1,11 +1,11 @@
-import { CdpAgentkit } from "@coinbase/cdp-agentkit-core";
-import { CdpToolkit } from "@coinbase/cdp-langchain";
-import { HumanMessage } from "@langchain/core/messages";
-import { MemorySaver } from "@langchain/langgraph";
-import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatOpenAI } from "@langchain/openai";
-import * as dotenv from "dotenv";
 import * as fs from "fs";
+import { ChatOpenAI } from "@langchain/openai";
+import { HumanMessage } from "@langchain/core/messages";
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { MemorySaver } from "@langchain/langgraph";
+import { CdpAgent } from "@coinbase/cdp-langchain";
+import { AgentKit } from "@coinbase/cdp-agentkit-core";
+import * as dotenv from "dotenv";
 import * as readline from "readline";
 
 dotenv.config();
@@ -20,7 +20,7 @@ function validateEnvironment(): void {
   const missingVars: string[] = [];
 
   // Check required variables
-  const requiredVars = ["OPENAI_API_KEY", "CDP_API_KEY_NAME", "CDP_API_KEY_PRIVATE_KEY"];
+  const requiredVars = ["XAI_API_KEY", "CDP_API_KEY_NAME", "CDP_API_KEY_PRIVATE_KEY"];
   requiredVars.forEach(varName => {
     if (!process.env[varName]) {
       missingVars.push(varName);
@@ -55,9 +55,13 @@ const WALLET_DATA_FILE = "wallet_data.txt";
  */
 async function initializeAgent() {
   try {
-    // Initialize LLM
+    // Initialize LLM with xAI configuration
     const llm = new ChatOpenAI({
-      model: "gpt-4o-mini",
+      model: "grok-beta",
+      apiKey: process.env.XAI_API_KEY,
+      configuration: {
+        baseURL: "https://api.x.ai/v1",
+      }
     });
 
     let walletDataStr: string | null = null;
@@ -78,12 +82,12 @@ async function initializeAgent() {
       networkId: process.env.NETWORK_ID || "base-sepolia",
     };
 
-    // Initialize CDP agentkit
-    const agentkit = await CdpAgentkit.configureWithWallet(config);
+    // Initialize CDP AgentKit
+    const agentKit = await AgentKit.create(config);
 
-    // Initialize CDP Agentkit Toolkit and get tools
-    const cdpToolkit = new CdpToolkit(agentkit);
-    const tools = cdpToolkit.getTools();
+    // Initialize CDP Agent and get tools
+    const cdpAgent = new CdpAgent(agentKit);
+    const tools = cdpAgent.getTools();
 
     // Store buffered conversation history in memory
     const memory = new MemorySaver();
@@ -99,7 +103,7 @@ async function initializeAgent() {
     });
 
     // Save wallet data
-    const exportedWallet = await agentkit.exportWallet();
+    const exportedWallet = await wrapper.exportWallet();
     fs.writeFileSync(WALLET_DATA_FILE, exportedWallet);
 
     return { agent, config: agentConfig };
