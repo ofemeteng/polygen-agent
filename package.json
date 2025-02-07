@@ -58,7 +58,9 @@
     "@langchain/core": "^0.3.20",
     "@langchain/langgraph": "^0.2.24",
     "@langchain/openai": "^0.3.14",
+    "axios": "^1.7.9",
     "dotenv": "^16.4.7",
-    "langchain-xai": "^0.2.2"
+    "langchain-xai": "^0.2.2",
+    "zod": "^3.24.1"
   }
 }

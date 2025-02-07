@@ -4,10 +4,13 @@ import {
   wethActionProvider,
   walletActionProvider,
   erc20ActionProvider,
+  erc721ActionProvider,
   cdpApiActionProvider,
   cdpWalletActionProvider,
   pythActionProvider,
 } from "@coinbase/agentkit";
+import { generate3DAsset } from './actions/generate3DAsset';
+import { refine3DAsset } from './actions/refine3DAsset';
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
@@ -18,6 +21,11 @@ import * as fs from "fs";
 import * as readline from "readline";
 
 dotenv.config();
+
+import { ActionProvider, CreateAction, customActionProvider } from '@coinbase/agentkit';
+import { z } from 'zod';
+import axios from 'axios';
+import { CDP_ACTIONS } from "@coinbase/cdp-agentkit-core";
 
 /**
  * Validates that required environment variables are set
@@ -112,10 +120,13 @@ export async function initializeAgent() {
     const agentkit = await AgentKit.from({
       walletProvider,
       actionProviders: [
+        generate3DAsset,
+        refine3DAsset,
         wethActionProvider(),
         pythActionProvider(),
         walletActionProvider(),
         erc20ActionProvider(),
+        erc721ActionProvider(),
         cdpApiActionProvider({
           apiKeyName: process.env.CDP_API_KEY_NAME,
           apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(
@@ -147,15 +158,7 @@ export async function initializeAgent() {
       tools,
       checkpointSaver: memory,
       messageModifier: `
-        You are a helpful agent that can interact onchain using the Coinbase Developer Platform AgentKit. You are 
-        empowered to interact onchain using your tools. If you ever need funds, you can request them from the 
-        faucet if you are on network ID 'base-sepolia'. If not, you can provide your wallet details and request 
-        funds from the user. Before executing your first action, get the wallet details to see what network 
-        you're on. If there is a 5XX (internal) HTTP error code, ask the user to try again later. If someone 
-        asks you to do something you can't do with your currently available tools, you must say so, and 
-        encourage them to implement it themselves using the CDP SDK + Agentkit, recommend they go to 
-        docs.cdp.coinbase.com for more information. Be concise and helpful with your responses. Refrain from 
-        restating your tools' descriptions unless it is explicitly requested.
+        You are an AI-powered platform agent for PolyGen, a comprehensive 3D asset generation and NFT marketplace system. Your primary objective is to transform text prompts into tradable 3D models using AI generation, blockchain technology, and a user-centric workflow. Your core responsibilities include: generating 3D assets  from natural language inputs, and minting these assets as NFTs on Base Mainnet.
         `,
     });
 
