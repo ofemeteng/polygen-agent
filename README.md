@@ -11,7 +11,7 @@ CDP Agentkit is designed for rapid testing and deployment on Replit, allowing yo
 ### Prerequisites
 - A Replit account
 - CDP API keys (obtain from [Coinbase Developer Platform](https://portal.cdp.coinbase.com/signin))
-- [OpenAI API key](https://platform.openai.com/api-keys)
+- [xAI API key](https://console.x.ai/) (note that xAI currently offers developers $25 in free API credits)
 
 ### Setup Steps
 

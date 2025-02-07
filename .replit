@@ -5,4 +5,4 @@ run = "npm i && npm run start"
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "cd cdp-langchain/examples/chatbot && npm i && npm run start"]
+run = ["sh", "-c", "npm i && npm run start"]
