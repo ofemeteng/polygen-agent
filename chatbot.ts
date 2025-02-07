@@ -68,7 +68,7 @@ const WALLET_DATA_FILE = "wallet_data.txt";
  *
  * @returns Agent executor and config
  */
-async function initializeAgent() {
+export async function initializeAgent() {
   try {
     // Initialize LLM
     // const llm = new ChatOpenAI({
