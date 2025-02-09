@@ -1,6 +1,6 @@
 
 import { NextRequest } from 'next/server';
-import { initializeAgent } from '../../chatbot';
+import { getAgent } from './server';
 import { HumanMessage } from '@langchain/core/messages';
 
 export const config = {
