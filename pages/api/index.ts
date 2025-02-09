@@ -10,5 +10,16 @@ export default async function handler(req: NextRequest) {
     return new Response('Method not allowed', { status: 405 });
   }
 
-  return Response.redirect(new URL('/api/health', req.url));
+  return new Response(
+    JSON.stringify({
+      status: 'ok',
+      message: 'API is running'
+    }),
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  );
 }
