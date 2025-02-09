@@ -1,0 +1,111 @@
+what is the meaning of this error
+
+"""
+**Server Error**
+**TypeError: Class extends value [object Object] is not a constructor or null**
+This error happened while generating the page. Any console logs will be displayed in the terminal window.
+****
+file:///home/runner/workspace/node_modules/%20(walletconnect/types/dist/index.es.js (1)
+**./node_modules/@walletconnect/types/dist/index.es.js**
+file:///home/runner/workspace/.next/server/pages/api/chat.js (3574:1)
+**__webpack_require__**
+file:///home/runner/workspace/.next/server/edge-runtime-webpack.js (37:33)
+**fn**
+file:///home/runner/workspace/.next/server/edge-runtime-webpack.js (300:21)
+**./node_modules/@walletconnect/core/dist/index.es.js**
+file:///home/runner/workspace/.next/server/pages/api/chat.js (3091:1)
+**__webpack_require__**
+file:///home/runner/workspace/.next/server/edge-runtime-webpack.js (37:33)
+**fn**
+file:///home/runner/workspace/.next/server/edge-runtime-webpack.js (300:21)
+**./node_modules/@walletconnect/sign-client/dist/index.es.js**
+file:///home/runner/workspace/.next/server/pages/api/chat.js (3442:1)
+"""
+
+this is the next api endpoint that generated the error
+
+"""
+
+import { NextRequest } from 'next/server';
+import { getAgent } from './server';
+import { HumanMessage } from '@langchain/core/messages';
+export const config = {
+  runtime: 'edge',
+};
+export default async function handler(req: NextRequest) {
+  if (req.method !== 'POST') {
+    return new Response('Method not allowed', { status: 405 });
+  }
+  try {
+    const { message } = await req.json();
+    
+    if (!message) {
+      return new Response('Message is required', { status: 400 });
+    }
+    const { agent, config } = await getAgent();
+    const stream = await agent.stream(
+      { messages: [new HumanMessage(message)] },
+      config
+    );
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            if ("agent" in chunk) {
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({
+                    type: "agent",
+                    content: chunk.agent.messages[0].content
+                  })}\n\n`
+                )
+              );
+            } else if ("tools" in chunk) {
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({
+                    type: "tools",
+                    content: chunk.tools.messages[0].content
+                  })}\n\n`
+                )
+              );
+            }
+          }
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+          controller.close();
+        } catch (error) {
+          controller.enqueue(
+            encoder.encode(
+              `data: ${JSON.stringify({
+                type: "error",
+                content: error instanceof Error ? error.message : 'Unknown error'
+              })}\n\n`
+            )
+          );
+          controller.close();
+        }
+      },
+    });
+    return new Response(readable, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+}
+
+"""
+
+i accessed it through a browser at /api/chat which is a GET request but I got that error, I was rather expecting a method not allowed response in line with the code.
+decipher and fix and explain if the /chat endpoint is correctly implemented.
+why that page error instead of the method not allowed json
