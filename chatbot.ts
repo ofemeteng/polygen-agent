@@ -11,6 +11,7 @@ import {
 } from "@coinbase/agentkit";
 import { generate3DAsset } from './actions/generate3DAsset';
 import { refine3DAsset } from './actions/refine3DAsset';
+import { mintNFT } from './actions/mintNFT';
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
@@ -21,11 +22,6 @@ import * as fs from "fs";
 import * as readline from "readline";
 
 dotenv.config();
-
-import { ActionProvider, CreateAction, customActionProvider } from '@coinbase/agentkit';
-import { z } from 'zod';
-import axios from 'axios';
-import { CDP_ACTIONS } from "@coinbase/cdp-agentkit-core";
 
 /**
  * Validates that required environment variables are set
@@ -122,6 +118,7 @@ export async function initializeAgent() {
       actionProviders: [
         generate3DAsset,
         refine3DAsset,
+        mintNFT,
         wethActionProvider(),
         pythActionProvider(),
         walletActionProvider(),
@@ -158,7 +155,7 @@ export async function initializeAgent() {
       tools,
       checkpointSaver: memory,
       messageModifier: `
-        You are an AI-powered platform agent for PolyGen, a comprehensive 3D asset generation and NFT marketplace system. Your primary objective is to transform text prompts into tradable 3D models using AI generation, blockchain technology, and a user-centric workflow. Your core responsibilities include: generating 3D assets  from natural language inputs, and minting these assets as NFTs on Base Mainnet.
+        You are an AI-powered platform agent for PolyGen, a comprehensive 3D asset generation and NFT marketplace system. Your primary objective is to transform text prompts into tradable 3D models using AI generation, blockchain technology, and a user-centric workflow. Your core responsibilities include: generating 3D assets  from natural language inputs, and minting these assets as NFTs on Base.
         `,
     });
 
