@@ -1,27 +1,6 @@
 {
   "version": 3,
   "middleware": {},
-  "functions": {
-    "/api": {
-      "files": [
-        "server/edge-runtime-webpack.js",
-        "server/pages/api.js"
-      ],
-      "name": "pages/api",
-      "page": "/api",
-      "matchers": [
-        {
-          "regexp": "^/api$",
-          "originalSource": "/api"
-        }
-      ],
-      "wasm": [],
-      "assets": [],
-      "env": {
-        "__NEXT_BUILD_ID": "development",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "TQLZ0mz6qfZo7eHlBzE45/La3vmD8pIG6b0hKzOPoJw="
-      }
-    }
-  },
+  "functions": {},
   "sortedMiddleware": []
 }
