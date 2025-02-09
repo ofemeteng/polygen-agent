@@ -10,16 +10,32 @@ export default async function handler(req: NextRequest) {
     return new Response('Method not allowed', { status: 405 });
   }
 
-  return new Response(
-    JSON.stringify({
-      status: 'ok',
-      message: 'API is running'
-    }),
-    {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json'
+  try {
+    return new Response(
+      JSON.stringify({
+        status: 'ok',
+        message: 'API is running',
+        timestamp: new Date().toISOString()
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive'
+        }
       }
-    }
-  );
+    );
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        status: 'error',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      }),
+      { 
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+  }
 }
