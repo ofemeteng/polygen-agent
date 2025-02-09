@@ -1,41 +1,20 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 
-import { NextRequest } from 'next/server';
-
-export const config = {
-  runtime: 'edge',
-};
-
-export default async function handler(req: NextRequest) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
-    return new Response('Method not allowed', { status: 405 });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    return new Response(
-      JSON.stringify({
-        status: 'ok',
-        message: 'API is running',
-        timestamp: new Date().toISOString()
-      }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive'
-        }
-      }
-    );
+    res.status(200).json({
+      status: 'ok',
+      message: 'API is running',
+      timestamp: new Date().toISOString()
+    });
   } catch (error) {
-    return new Response(
-      JSON.stringify({
-        status: 'error',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      }),
-      { 
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
+    res.status(500).json({
+      status: 'error',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 }

@@ -1,22 +1,24 @@
-
-import { NextRequest } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { getAgent } from './server';
 import { HumanMessage } from '@langchain/core/messages';
 
 export const config = {
-  runtime: 'edge',
+  api: {
+    bodyParser: true,
+    responseLimit: false,
+  },
 };
 
-export default async function handler(req: NextRequest) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { message } = await req.json();
-    
+    const { message } = req.body;
+
     if (!message) {
-      return new Response('Message is required', { status: 400 });
+      return res.status(400).json({ error: 'Message is required' });
     }
 
     const { agent, config } = await getAgent();
@@ -25,60 +27,31 @@ export default async function handler(req: NextRequest) {
       config
     );
 
-    const encoder = new TextEncoder();
-    const readable = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of stream) {
-            if ("agent" in chunk) {
-              controller.enqueue(
-                encoder.encode(
-                  `data: ${JSON.stringify({
-                    type: "agent",
-                    content: chunk.agent.messages[0].content
-                  })}\n\n`
-                )
-              );
-            } else if ("tools" in chunk) {
-              controller.enqueue(
-                encoder.encode(
-                  `data: ${JSON.stringify({
-                    type: "tools",
-                    content: chunk.tools.messages[0].content
-                  })}\n\n`
-                )
-              );
-            }
-          }
-          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-          controller.close();
-        } catch (error) {
-          controller.enqueue(
-            encoder.encode(
-              `data: ${JSON.stringify({
-                type: "error",
-                content: error instanceof Error ? error.message : 'Unknown error'
-              })}\n\n`
-            )
-          );
-          controller.close();
-        }
-      },
-    });
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
 
-    return new Response(readable, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
-    });
+    for await (const chunk of stream) {
+      if ("agent" in chunk) {
+        res.write(`data: ${JSON.stringify({
+          type: "agent",
+          content: chunk.agent.messages[0].content
+        })}\n\n`);
+      } else if ("tools" in chunk) {
+        res.write(`data: ${JSON.stringify({
+          type: "tools",
+          content: chunk.tools.messages[0].content
+        })}\n\n`);
+      }
+    }
+
+    res.write('data: [DONE]\n\n');
+    res.end();
   } catch (error) {
-    return new Response(
-      JSON.stringify({
+    if (!res.headersSent) {
+      res.status(500).json({
         error: error instanceof Error ? error.message : 'Unknown error'
-      }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+      });
+    }
   }
 }
