@@ -3,7 +3,6 @@
 
 [![Built with CDP AgentKit](https://img.shields.io/badge/Built%20with-CDP%20AgentKit-blue)](https://docs.cdp.coinbase.com/agentkit/docs/welcome)
 [![Network](https://img.shields.io/badge/Network-Base-green)](https://base.org)
-[![License](https://img.shields.io/badge/License-Apache%202.0-yellow)](LICENSE)
 
 ## 🌟 Overview
 
@@ -110,23 +109,10 @@ The system follows this workflow:
 
 ## 🏆 Innovation Highlights
 
-- First AI agent specifically designed for 3D NFT creation
+- AI agent specifically designed for 3D NFT creation
 - Seamless integration with Base network
 - Production-ready security with CDP AgentKit
-- Scalable architecture supporting multiple AI models
-- Community-driven style customization
-
-## 🤝 Contributing
-
-We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## 🔒 Security
-
-Security is our top priority. Review our [Security Policy](SECURITY.md) for details.
-
-## 📄 License
-
-Licensed under Apache 2.0 - see the [LICENSE](LICENSE) file for details.
+- Scalable architecture supporting AI models
 
 ## 🙏 Acknowledgments
 
@@ -135,4 +121,4 @@ Licensed under Apache 2.0 - see the [LICENSE](LICENSE) file for details.
 - Meshy.ai team
 - ThirdWeb team
 
-Built with ❤️ for the Base + CDP AgentKit Hackathon
+Built with ❤️ for the Agentic Ethereum Hackathon
