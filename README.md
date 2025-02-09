@@ -38,6 +38,8 @@ PolyGen democratizes this process, making it accessible to everyone through natu
 
 ## 🚀 Getting Started
 
+The AI3D NFT Collection contract on Base Sepolia - https://sepolia.basescan.org/address/0x6C7da6A8eE20b9380d2a05c5C0C91279a403ab89
+
 ### Prerequisites
 
 - Node.js 18+
