@@ -6,3 +6,4 @@ channel = "stable-24_05"
 
 [deployment]
 run = ["sh", "-c", "npm i && npm run start"]
+deploymentTarget = "cloudrun"
