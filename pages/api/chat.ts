@@ -19,7 +19,7 @@ export default async function handler(req: NextRequest) {
       return new Response('Message is required', { status: 400 });
     }
 
-    const { agent, config } = await initializeAgent();
+    const { agent, config } = await getAgent();
     const stream = await agent.stream(
       { messages: [new HumanMessage(message)] },
       config
