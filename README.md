@@ -1,93 +1,138 @@
-# CDP AgentKit.js SDK
-![images/image.png](images/image.png)
-Give your AI Agent its own crypto wallet with the Coinbase Developer Platform (CDP) Agentkit for Node.js! This SDK provides everything you need to bring your AI agents onchain quickly and securely.
 
-## Overview
+# PolyGen: AI-Powered 3D Asset Generation & NFT Marketplace 🎨
 
-CDP Agentkit is designed for rapid testing and deployment on Replit, allowing you to create AI agents that can interact with various onchain actions using the CDP SDK.  Simply add your API keys and click "Run" to get started.
+[![Built with CDP AgentKit](https://img.shields.io/badge/Built%20with-CDP%20AgentKit-blue)](https://docs.cdp.coinbase.com/agentkit/docs/welcome)
+[![Network](https://img.shields.io/badge/Network-Base-green)](https://base.org)
+[![License](https://img.shields.io/badge/License-Apache%202.0-yellow)](LICENSE)
 
-## Getting Started
+## 🌟 Overview
+
+PolyGen revolutionizes the 3D asset creation and NFT marketplace landscape by combining cutting-edge AI technology with blockchain innovation. Built on the Base network using Coinbase Developer Platform (CDP) AgentKit, PolyGen enables creators to transform text descriptions into stunning 3D models and seamlessly mint them as NFTs.
+
+### 🎯 The Problem We're Solving
+
+Traditional 3D asset creation requires:
+- Extensive technical expertise
+- Expensive software licenses
+- Time-consuming modeling processes
+- Complex blockchain integration
+
+PolyGen democratizes this process, making it accessible to everyone through natural language interactions and automated workflows.
+
+## ✨ Key Features
+
+- 🤖 **AI-Powered 3D Generation**: Transform text descriptions into detailed 3D models using Meshy.ai integration
+- 🎨 **Style Customization**: Specify art styles and refinements through natural language
+- 💎 **One-Click NFT Minting**: Seamless NFT creation on the Base network
+- 🔗 **CDP AgentKit Integration**: Secure wallet management and blockchain interactions
+- 💬 **Natural Language Interface**: Chat-based interaction for all features
+- 🔄 **Autonomous Mode**: Let the agent operate independently for batch operations
+
+## 🛠️ Technology Stack
+
+- **Blockchain**: Base Network (Ethereum L2)
+- **Smart Contracts**: Thirdweb
+- **AI/ML**: OpenAI GPT-4, Meshy.ai
+- **Backend**: Node.js, TypeScript
+- **Framework**: CDP AgentKit, LangChain
+- **Storage**: IPFS (via Thirdweb)
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- A Replit account
-- CDP API keys (obtain from [Coinbase Developer Platform](https://portal.cdp.coinbase.com/signin))
-- [xAI API key](https://console.x.ai/) (note that xAI currently offers developers $25 in free API credits)
 
-### Setup Steps
+- Node.js 18+
+- CDP API Keys
+- OpenAI API Key
+- Meshy.ai API Key
+- Thirdweb API Key
 
-1. **Fork the Template**
-   - Click "Fork" to create your own copy of this project
+### Environment Variables
 
-2. **Configure API Keys**
-   - Navigate to Tools > Secrets
-   - Click "Edit as JSON" **adding the CDP as JSON will naturally fix /n formatting issues that you might otherwise face if copy and pasting directly**
-   - Add your CDP API keys and other required secrets
-   - ![images/ReplitSecretImage.png](images/ReplitSecretImage.png)
+```env
+OPENAI_API_KEY=your_openai_key
+CDP_API_KEY_NAME=your_cdp_key_name
+CDP_API_KEY_PRIVATE_KEY=your_cdp_private_key
+MESHY_API_KEY=your_meshy_key
+THIRDWEB_CLIENT_ID=your_thirdweb_client_id
+CONTRACT_ADDRESS=your_nft_contract_address
+ACCOUNT_PRIVATE_KEY=your_wallet_private_key
+NETWORK_ID=base-sepolia
+```
 
-3. **Launch Your Agent**
-   - Click the "Run" button
-   - Select your preferred mode:
-     - Chat Mode: Interactive conversation with your agent
-     - Autonomous Mode: Agent operates independently
-  - ![images/runbutton.png](images/runbutton.png)
+### Installation
 
-### Deployment
+1. Fork this repository on Replit
+2. Add environment variables via Replit Secrets
+3. Click "Run" to start the development server
 
-For production deployment, we recommend using Replit Core:
-- Ensures reliable uptime
-- Provides enhanced performance
-- Enables persistent storage
+### Usage Modes
 
-**Note**: Coinbase is currently offering sponsorships to CDP Developers for Replit Core this will give you uppgraded AI and Deployment credits. Contact kevin.leffew@coinbase.com for details.
+1. **Chat Mode**: Interactive conversation with the agent
+```bash
+Choose mode: 1
+```
 
-### Frontend Integration
+2. **Autonomous Mode**: Let the agent operate independently
+```bash
+Choose mode: 2
+```
 
-Once you get the agent going, you can extend it with langchain models.  You may even consider adding a user interface to your agent.  We have a frontend template here that is easy to configure with AgentKit [frontend template](https://replit.com/@alissacrane1/onchain-agent-demo-frontend).
+## 🎨 Frontend Implementation
 
-## Key Features
+The frontend repository for PolyGen is available at [PolyGen Frontend Demo](https://replit.com/@username/polygen-frontend). It provides:
 
-- **Framework Agnostic**: Built with common AI Agent primitives compatible with any AI framework
-- **LangChain Integration**: 
-  - Built-in support for LangChain.js workflows in this Node.js version
-  - For Python developers, check out our [Python version](https://replit.com/@CoinbaseDev/CDP-AgentKit?v=1)
-  - More frameworks coming soon!
+- Intuitive text-to-3D interface
+- Real-time 3D model previews
+- NFT minting dashboard
+- Transaction history
+- Wallet integration
 
-### What can AgentKit do? 
-**AgentKit enables LLMs to take actions onchain, here are some examples**:
-  - Request testnet funds via faucet
-  - Manage wallet details and balance checks
-  - Execute token transfers and trades
-  - Register and manage Basenames
-  - Deploy and manage ERC20 tokens
-  - Create and mint ERC721 NFTs
-  - Deploy tokens using Zora's Wow Launcher (Bonding Curve)
-  - Trade Zora Wow ERC20 coins
-    
-## Resources
+To connect the frontend:
+1. Fork the frontend repository
+2. Update the API endpoint in the frontend configuration
+3. Run both repositories simultaneously
 
-### Documentation
-- [Getting Started Guide](https://docs.cdp.coinbase.com/agentkit/docs/welcome)
-- [Core API Reference](https://coinbase.github.io/cdp-agentkit-nodejs/cdp-agentkit-core/index.html)
-- [LangChain Extension Reference](https://coinbase.github.io/cdp-agentkit-nodejs/cdp-langchain/index.html)
+## 🔧 Technical Architecture
 
-### Support
-- [GitHub Issues](https://github.com/coinbase/cdp-agentkit/issues)
-- [Discord Community](https://discord.gg/coinbase-dev)
+PolyGen leverages CDP AgentKit's powerful features:
+- Secure wallet management
+- Blockchain transaction handling
+- Smart contract interactions
+- Multi-chain support
 
-## Security
+The system follows this workflow:
+1. Text prompt processing
+2. 3D model generation via Meshy.ai
+3. IPFS storage of assets
+4. NFT minting on Base
+5. Transaction verification
 
-We take security seriously. Please review our [Security Policy](SECURITY.md) for:
-- Reporting vulnerabilities
-- Security best practices
-- Responsible disclosure program
+## 🏆 Innovation Highlights
 
-## Contributing
+- First AI agent specifically designed for 3D NFT creation
+- Seamless integration with Base network
+- Production-ready security with CDP AgentKit
+- Scalable architecture supporting multiple AI models
+- Community-driven style customization
 
-We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for:
-- Development setup
-- Coding standards
-- Pull request process
+## 🤝 Contributing
 
-## License
+We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
 
-This project is licensed under [LICENSE NAME] - see the [LICENSE](LICENSE) file for details.
+## 🔒 Security
+
+Security is our top priority. Review our [Security Policy](SECURITY.md) for details.
+
+## 📄 License
+
+Licensed under Apache 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Coinbase Developer Platform team
+- Base network team
+- Meshy.ai team
+- ThirdWeb team
+
+Built with ❤️ for the Base + CDP AgentKit Hackathon
